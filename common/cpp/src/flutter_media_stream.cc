@@ -263,7 +263,7 @@ void FlutterMediaStream::GetUserVideo(const EncodableMap& constraints,
     return;
 
   if (!video_capturer.get()) {
-    base_->video_device_->GetDeviceName(0, strNameUTF8, 128, strGuidUTF8, 128);
+    base_->video_device_->GetDeviceName(0, strNameUTF8, 256, strGuidUTF8, 256);
     video_capturer =
         base_->video_device_->Create(strNameUTF8, 0, width, height, fps);
   }
@@ -298,8 +298,8 @@ void FlutterMediaStream::GetSources(std::unique_ptr<MethodResultProxy> result) {
   EncodableList sources;
 
   int nb_audio_devices = base_->audio_device_->RecordingDevices();
-  char strNameUTF8[RTCAudioDevice::kAdmMaxDeviceNameSize + 1] = {0};
-  char strGuidUTF8[RTCAudioDevice::kAdmMaxGuidSize + 1] = {0};
+  char strNameUTF8[256] = {0};
+  char strGuidUTF8[256] = {0};
 
   for (uint16_t i = 0; i < nb_audio_devices; i++) {
     base_->audio_device_->RecordingDeviceName(i, strNameUTF8, strGuidUTF8);
@@ -326,7 +326,7 @@ void FlutterMediaStream::GetSources(std::unique_ptr<MethodResultProxy> result) {
 
   int nb_video_devices = base_->video_device_->NumberOfDevices();
   for (int i = 0; i < nb_video_devices; i++) {
-    base_->video_device_->GetDeviceName(i, strNameUTF8, 128, strGuidUTF8, 128);
+    base_->video_device_->GetDeviceName(i, strNameUTF8, 256, strGuidUTF8, 256);
     EncodableMap video;
     video[EncodableValue("label")] = EncodableValue(std::string(strNameUTF8));
     video[EncodableValue("deviceId")] =
